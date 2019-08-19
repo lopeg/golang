@@ -1,0 +1,2 @@
+Proxy web server is used to reach Azure resources with implicit auth2 token
+Deployed as side-car container. Grabs credential from environment variables, obtains token, and proxies your request to azure usining it
