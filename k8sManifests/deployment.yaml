@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+  namespace: elk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - image: grafana/grafana:5.4.2
+        name: grafana
+        env:
+        - name: GF_INSTALL_PLUGINS
+          value: simpod-json-datasource, grafana-simple-json-datasource
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: <SECRET_GRFN-CFG-GFSECURITYADMINPASSWORDVALUE>
+        ports:
+        - containerPort: 3000
+          name: http
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: http
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
